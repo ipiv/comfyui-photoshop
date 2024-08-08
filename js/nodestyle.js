@@ -213,7 +213,7 @@ app.registerExtension({
 
 api.addEventListener("execution_start", () => photoshopNode.forEach((node) => previewonthenode(node)));
 
-let versionUrl = "https://raw.githubusercontent.com/NimaNzrii/comfyui-photoshop/main/data/PreviewFiles/version.json";
+let versionUrl = "https://raw.githubusercontent.com/ipiv/comfyui-photoshop/main/data/PreviewFiles/version.json";
 
 const checkForNewVersion = async (nodever) => {
   try {
