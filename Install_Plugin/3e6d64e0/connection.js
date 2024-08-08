@@ -1,5 +1,5 @@
 let workflowList = null;
-ipField.value = "127.0.0.1";
+ipField.value = "127.0.0.1:8188";
 let socket;
 let connectState = false;
 let changeip = false;
@@ -21,8 +21,8 @@ const initWebSocket = async () => {
 
   try {
     console.log("Attempting to connect to IP:", ipField.value);
-    socket = new WebSocket(`ws://${ipField.value}:8188/ps/ws?clientId=${clientId}&platform=ps`);
-    console.log(`ws://${ipField.value}:8188?clientId=${clientId}&platform=ps`);
+    socket = new WebSocket(`ws://${ipField.value}/ps/ws?clientId=${clientId}&platform=ps`);
+    console.log(`ws://${ipField.value}?clientId=${clientId}&platform=ps`);
     socket.addEventListener("open", handleSocketOpen);
     socket.addEventListener("message", handleSocketMessage);
     socket.addEventListener("close", handleSocketClose);
@@ -111,12 +111,12 @@ const updateDropdown = (dropdown, list, placeholderPrefix, dropDownElement) => {
 const handleSocketClose = async (event) => {
   await closeSocket();
   connectState = false;
-  console.error(`Socket closed. Disconnected from ${ipField.value}:8188`);
+  console.error(`Socket closed. Disconnected from ${ipField.value}`);
   updateIPStatus("Not Connected");
 
   if (!changeip) {
     setTimeout(() => {
-      console.log(`Trying to reconnect to ${ipField.value}:8188`);
+      console.log(`Trying to reconnect to ${ipField.value}`);
       initWebSocket();
     }, 5000);
   }
@@ -164,7 +164,7 @@ ipApplyButton.addEventListener("click", async () => {
 
 // Reset IP address to default
 ipResetButton.addEventListener("click", async () => {
-  ipField.value = "127.0.0.1";
+  ipField.value = "127.0.0.1:8188";
   changeip = true;
   UpdateWebview();
   await saveConfigFile();

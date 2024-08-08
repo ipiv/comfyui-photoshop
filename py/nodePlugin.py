@@ -13,6 +13,9 @@ import folder_paths
 import sys
 import torchvision.transforms.functional as tf
 import aiohttp
+import socket
+import requests
+import functools
 
 
 sys.stdout.reconfigure(encoding="utf-8")
@@ -20,6 +23,52 @@ nodepath = os.path.join(
     folder_paths.get_folder_paths("custom_nodes")[0], "comfyui-photoshop"
 )
 
+# region SERVER Utilities
+class IPChecker:
+    def __init__(self):
+        self.ips = list(self.get_local_ips())
+        self.checked_ips = set()
+
+    def get_working_ip(self, test_url_template):
+        for ip in self.ips:
+            if ip not in self.checked_ips:
+                self.checked_ips.add(ip)
+                test_url = test_url_template.format(ip)
+                if self._test_url(test_url):
+                    return ip
+        return None
+
+    @staticmethod
+    def get_local_ips(prefix="192.168."):
+        hostname = socket.gethostname()
+        print(f"[ComfyUIToPhotoshop] Getting local ips for {hostname}")
+        for info in socket.getaddrinfo(hostname, None):
+            # Filter out IPv6 addresses if you only want IPv4
+            # if info[1] == socket.SOCK_STREAM and
+            if info[0] == socket.AF_INET and info[4][0].startswith(prefix):
+                yield info[4][0]
+
+    def _test_url(self, url):
+        try:
+            response = requests.get(url)
+            return response.status_code == 200
+        except Exception:
+            return False
+
+
+@functools.lru_cache(maxsize=1)
+def get_server_info():
+    from comfy.cli_args import args
+
+    ip_checker = IPChecker()
+    base_url = args.listen
+    if base_url == "0.0.0.0":
+        print("Server set to 0.0.0.0, we will try to resolve the host IP")
+        base_url = ip_checker.get_working_ip(
+            f"http://{{}}:{args.port}/history"
+        )
+        print(f"[ComfyUIToPhotoshop] Setting ip to {base_url}")
+    return (base_url, args.port)
 
 def is_changed_file(filepath):
     try:
@@ -167,7 +216,9 @@ class ComfyUIToPhotoshop(SaveImage):
 
     async def connect_to_backend(self, filename):
         try:
-            url = f"http://127.0.0.1:8188/ps/renderdone?filename={filename}"
+            base_url, port = get_server_info()
+            url = f"http://{base_url}:{port}/ps/renderdone?filename={filename}"
+            print(f"[ComfyUIToPhotoshop] Connecting to backend at {url}")
             async with aiohttp.ClientSession() as session:
                 async with session.get(url) as response:
                     return await response.text()

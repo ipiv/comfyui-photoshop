@@ -216,7 +216,7 @@ renderbutton.addEventListener("contextmenu", function (event) {
 });
 
 const UpdateWebview = () => {
-  webviewComfy.src = "http://" + ipField.value + ":8188";
+  webviewComfy.src = "http://" + ipField.value;
 };
 
 const handleInputChange = async () => {
