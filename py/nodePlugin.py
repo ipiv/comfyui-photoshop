@@ -63,11 +63,12 @@ def get_server_info():
     ip_checker = IPChecker()
     base_url = args.listen
     if base_url == "0.0.0.0":
-        print("Server set to 0.0.0.0, we will try to resolve the host IP")
-        base_url = ip_checker.get_working_ip(
-            f"http://{{}}:{args.port}/history"
-        )
-        print(f"[ComfyUIToPhotoshop] Setting ip to {base_url}")
+        base_url = socket.gethostname()
+        # print("Server set to 0.0.0.0, we will try to resolve the host IP")
+        # base_url = ip_checker.get_working_ip(
+        #     f"http://{{}}:{args.port}/history"
+        # )
+        # print(f"[ComfyUIToPhotoshop] Setting ip to {base_url}")
     return (base_url, args.port)
 
 def is_changed_file(filepath):
