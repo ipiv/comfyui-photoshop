@@ -12,12 +12,12 @@ from server import PromptServer
 # Set up paths
 nodepath = os.path.join(
     folder_paths.get_folder_paths("custom_nodes")[0],
-    "comfyui-photoshop",
+    "comfyui-ps",
 )
 workflows_directory = os.path.join(nodepath, "data", "workflows")
 ps_inputs_directory = os.path.join(
     folder_paths.get_folder_paths("custom_nodes")[0],
-    "comfyui-photoshop",
+    "comfyui-ps",
     "data",
     "ps_inputs",
 )
