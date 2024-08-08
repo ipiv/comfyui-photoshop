@@ -4,7 +4,7 @@ import folder_paths
 
 # Define the path to the 'py' directory
 py = os.path.join(
-    folder_paths.get_folder_paths("custom_nodes")[0], "comfyui-photoshop", "py"
+    folder_paths.get_folder_paths("custom_nodes")[0], "comfyui-ps", "py"
 )
 
 # List of modules
