@@ -22,7 +22,7 @@ const initWebSocket = async () => {
   try {
     console.log("Attempting to connect to IP:", ipField.value);
     socket = new WebSocket(`ws://${ipField.value}/ps/ws?clientId=${clientId}&platform=ps`);
-    console.log(`ws://${ipField.value}?clientId=${clientId}&platform=ps`);
+    console.log(`ws://${ipField.value}/ps/ws?clientId=${clientId}&platform=ps`);
     socket.addEventListener("open", handleSocketOpen);
     socket.addEventListener("message", handleSocketMessage);
     socket.addEventListener("close", handleSocketClose);
