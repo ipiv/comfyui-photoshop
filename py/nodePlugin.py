@@ -92,8 +92,8 @@ class PhotoshopToComfyUI:
     def INPUT_TYPES(cls):
         return {"required": {}}
 
-    RETURN_TYPES = ("IMAGE", "MASK", "FLOAT", "INT", "STRING", "STRING", "INT", "INT")
-    RETURN_NAMES = ("Canvas", "Mask", "Slider", "Seed", "+", "-", "W", "H")
+    RETURN_TYPES = ("IMAGE", "MASK", "FLOAT", "FLOAT", "INT", "STRING", "STRING", "INT", "INT")
+    RETURN_NAMES = ("Canvas", "Mask", "Slider", "Slider2", "Seed", "+", "-", "W", "H")
     FUNCTION = "PS_Execute"
     CATEGORY = "Photoshop"
 
@@ -103,11 +103,13 @@ class PhotoshopToComfyUI:
         self.SendImg()
 
         sliderValue = self.slider / 100
+        slider2Value = self.slider2 / 100
 
         return (
             self.canvas,
             self.mask.unsqueeze(0),
             sliderValue,
+            slider2Value,
             int(self.seed),
             self.psPrompt,
             self.ngPrompt,
@@ -148,6 +150,7 @@ class PhotoshopToComfyUI:
         self.ngPrompt = self.ConfigData["negative"]
         self.seed = self.ConfigData["seed"]
         self.slider = self.ConfigData["slider"]
+        self.slider2 = self.ConfigData["slider2"]
 
     def SendImg(self):
         self.loadImg(self.canvasDir)

@@ -20,6 +20,7 @@ const initWebSocket = async () => {
   }
 
   try {
+    ipField.value = ipField.value.replace('https://','').replace('http://','')
     console.log("Attempting to connect to IP:", ipField.value);
     socket = new WebSocket(`ws://${ipField.value}/ps/ws?clientId=${clientId}&platform=ps`);
     console.log(`ws://${ipField.value}/ps/ws?clientId=${clientId}&platform=ps`);

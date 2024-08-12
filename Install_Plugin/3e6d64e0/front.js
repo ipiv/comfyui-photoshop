@@ -16,12 +16,18 @@ let canvasunsavedchanges = true;
 let configunsavedchanges = true;
 // slider
 let isDragging = false;
+let isDragging2 = false;
 let offsetY = 0;
 
 const onDragStart = function (e) {
   isDragging = true;
   offsetY = e.clientY - sliderForground.getBoundingClientRect().top;
   onDrag(e);
+};
+const onDragStart2 = function (e) {
+  isDragging2 = true;
+  offsetY = e.clientY - sliderForground2.getBoundingClientRect().top;
+  onDrag2(e);
 };
 
 const onDrag = function (e) {
@@ -37,8 +43,28 @@ const onDrag = function (e) {
     sliderTxt.innerText = `${sliderValInput.value}`;
   }
 };
+const onDrag2 = function (e) {
+  if (isDragging2) {
+    let newHeight;
+    const maxheight = 92;
+    const bgRect = sliderForground2.parentElement.getBoundingClientRect();
+    newHeight = Math.round(((bgRect.bottom - e.clientY) / bgRect.height) * 100);
+    newHeight = Math.min(maxheight, Math.max(1, newHeight));
+    sliderForground2.style.height = `${newHeight}%`;
+
+    sliderValInput2.value = String(Math.round(newHeight * (100 / maxheight)));
+    sliderTxt2.innerText = `${sliderValInput2.value}`;
+  }
+};
+
 const onDragStop = () => {
   isDragging = false;
+  configunsavedchanges = true;
+  smtchanged();
+};
+
+const onDragStop2 = () => {
+  isDragging2 = false;
   configunsavedchanges = true;
   smtchanged();
 };
@@ -66,6 +92,11 @@ sliderBackground.addEventListener("mouseup", onDragStop);
 sliderBackground.addEventListener("mousedown", onDragStart);
 sliderBackground.addEventListener("mouseleave", onDragStop);
 sliderBackground.addEventListener("mousemove", onDrag);
+
+sliderBackground2.addEventListener("mouseup", onDragStop2);
+sliderBackground2.addEventListener("mousedown", onDragStart2);
+sliderBackground2.addEventListener("mouseleave", onDragStop2);
+sliderBackground2.addEventListener("mousemove", onDrag2);
 // // slider Element // //
 
 // // Funcuinallity of Controller Buttons // //
@@ -232,4 +263,9 @@ negativeInput.addEventListener("change", handleInputChange);
 sliderValInput.addEventListener("input", function () {
   sliderForground.style.height = `${sliderValInput.value * 0.92}%`;
   sliderTxt.innerText = `${sliderValInput.value}`;
+});
+
+sliderValInput2.addEventListener("input", function () {
+  sliderForground2.style.height = `${sliderValInput2.value * 0.92}%`;
+  sliderTxt2.innerText = `${sliderValInput2.value}`;
 });

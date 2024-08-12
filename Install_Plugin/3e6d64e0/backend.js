@@ -4,6 +4,10 @@ const verifyValues = () => {
   sliderForground.style.height = `${sliderValInput.value * 0.92}%`;
   sliderTxt.innerText = `${sliderValInput.value}`;
 
+  if (!sliderValInput2.value) sliderValInput2.value = "45";
+  sliderForground2.style.height = `${sliderValInput2.value * 0.92}%`;
+  sliderTxt2.innerText = `${sliderValInput2.value}`;
+
   if (!seedInput.value || isNaN(seedInput.value)) seedInput.value = "1379";
   if (!maxResField.value || isNaN(maxResField.value)) maxResField.value = "1024";
   if (!minResField.value || isNaN(minResField.value)) minResField.value = "320";
@@ -22,12 +26,13 @@ const loadConfigFile = async () => {
       const configFile = await dataFolder.getEntry("config.json");
 
       if (configFile) {
-        const { positive, negative, seed, slider, ip, maxres, minres, disableanimations, neverhideslider, shownegative, fixMask } = JSON.parse(await configFile.read());
+        const { positive, negative, seed, slider, slider2, ip, maxres, minres, disableanimations, neverhideslider, shownegative, fixMask } = JSON.parse(await configFile.read());
 
         positiveInput.value = String(positive);
         negativeInput.value = String(negative);
         seedInput.value = String(seed);
         sliderValInput.value = String(slider);
+        sliderValInput2.value = String(slider2);
         maxResField.value = String(maxres);
         minResField.value = String(minres);
 
@@ -73,6 +78,7 @@ const saveConfigFile = async () => {
       negative: negativeInput.value,
       seed: seedInput.value,
       slider: parseFloat(sliderValInput.value),
+      slider2: parseFloat(sliderValInput2.value),
       pluginVer: pluginVersion,
     };
 
@@ -83,6 +89,7 @@ const saveConfigFile = async () => {
       negative: negativeInput.value,
       seed: seedInput.value,
       slider: sliderValInput.value,
+      slider2: sliderValInput2.value,
       pluginVer: pluginVersion,
       ip: ipField.value,
       maxres: maxResField.value,

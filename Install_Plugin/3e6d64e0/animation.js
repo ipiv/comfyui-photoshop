@@ -6,6 +6,7 @@ function manageAnimation() {
   } else {
     stopAnimations();
     sliderContainer.style.right = `8px`;
+    sliderContainer2.style.left = `8px`;
     buttonlist.style.left = `8px`;
     controlContainer_Background.style.bottom = `0px`;
   }
@@ -13,6 +14,7 @@ function manageAnimation() {
 
 function stopAnimations() {
   gsap.killTweensOf(sliderContainer);
+  gsap.killTweensOf(sliderContainer2);
   gsap.killTweensOf(buttonlist);
   gsap.killTweensOf(controlContainer_Background);
 }
@@ -37,7 +39,7 @@ function playanimation() {
 
     const currentMouseStatus = mouse_w > 80 && mouse_h < 72;
     if (currentMouseStatus !== prevMouseStatus) {
-      if (!never_hide_slider.checked) animateElement(sliderContainer, { right: currentMouseStatus ? 8 : -62 });
+      if (!never_hide_slider.checked) animateElement(sliderContainer, { right: currentMouseStatus ? 8 : -62 }) && animateElement(sliderContainer2, { left: currentMouseStatus ? 8 : -62 });
       prevMouseStatus = currentMouseStatus;
     }
   });
@@ -47,6 +49,7 @@ function playanimation() {
     if (anim) {
       if (never_hide_slider.checked) {
         animateElement(sliderContainer, { right: 8 });
+        animateElement(sliderContainer2, { left: 8 });
       }
       animateElement(buttonlist, { left: 10 });
       animateElement(controlContainer_Background, { bottom: 0 });
@@ -61,6 +64,7 @@ function playanimation() {
           animateElement(buttonlist, { left: -60 });
           animateElement(controlContainer_Background, { bottom: -86 });
           animateElement(sliderContainer, { right: -62 });
+          animateElement(sliderContainer2, { left: -62 });
         }
       }, 500);
     }
